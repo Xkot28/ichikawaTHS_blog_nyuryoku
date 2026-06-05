@@ -1,1 +1,60 @@
+<!DOCTYPE html>
+<html lang='ja'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link rel='stylesheet' href='index.css'>
+    <title>ブログ投稿管理 - 市川工業EA3</title>
+</head>
+<body>
+    <header>
+        <h1>ADMIN POSTING TOOL</h1>
+        <p>ブログ記事作成専用ページ</p>
+    </header>
+    <main>
+        <section class='form-container'>
+            <h2>新規記事作成</h2>
+            <div class='input-group'>
+                <label>タイトル</label>
+                <input type='text' id='post-title' placeholder='例：本日の製作進捗'>
+            </div>
+            <div class='input-group'>
+                <label>本文</label>
+                <textarea id='post-content' rows='8' placeholder='活動内容を詳しく入力してください...'></textarea>
+            </div>
+            <div class='input-group'>
+                <label>画像ファイル名</label>
+                <input type='text' id='post-image' placeholder='例：image1.png'>
+            </div>
+            <button onclick='generateMarkdown()' class='btn'>Markdownを生成する</button>
+        </section>
 
+        <section id='result-section' style='display:none;'>
+            <h2>生成されたデータ</h2>
+            <pre id='markdown-output'></pre>
+            <p class='hint'>※この内容をコピーして、Colabの投稿フォームやGitHubの新規ファイルとして利用してください。</p>
+        </section>
+    </main>
+    <script>
+        function generateMarkdown() {
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+            const img = document.getElementById('post-image').value;
+            const date = new Date().toISOString().split('T')[0];
+            
+            const md = `---
+title: ${title}
+date: ${date}
+author: EA3 Group
+---
+
+![${title}](${img})
+
+${content}`;
+            
+            document.getElementById('markdown-output').textContent = md;
+            document.getElementById('result-section').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

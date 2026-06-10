@@ -1,19 +1,36 @@
 <!DOCTYPE html>
 <html lang='ja'>
-  <head>
+<head>
     <meta charset='UTF-8'>
-    <link rel='stylesheet' href='index.css'>
-    <title>投稿管理 - EA3</title>
-  </head>
-  <body>
-    <header>
-      <h1>ADMIN TOOL</h1>
-      <p>記事作成ページ</p>
-    </header>
-    <main>
-      <h2>新規記事作成</h2>
-      <p>このサイトは入力フォームのプレビューです。実際の投稿はColabのパネルで行います。</p>
-    </main>
-    <footer>&copy; 2023 市川工業高校 EA3 Group</footer>
-  </body>
+    <title>EA3 投稿生成ツール</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        button { width: 100%; padding: 15px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        pre { background: #e9ecef; padding: 15px; white-space: pre-wrap; word-wrap: break-word; border-radius: 5px; display: none; margin-top: 20px; border: 1px dashed #007bff; }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <h2>📝 ブログHTML生成</h2>
+        <input type='text' id='t' placeholder='タイトル'>
+        <input type='text' id='u' placeholder='画像のURL'>
+        <textarea id='c' rows='5' placeholder='本文を入力...'></textarea>
+        <button onclick='gen()'>貼り付け用コードを生成</button>
+        <pre id='o'></pre>
+    </div>
+    <script>
+        function gen(){
+            const t = document.getElementById('t').value;
+            const u = document.getElementById('u').value;
+            const c = document.getElementById('c').value;
+            const d = new Date().toLocaleDateString();
+            const html = `\n        <article class='post'>\n            <h3>${t}</h3>\n            <p class='date'>投稿日: ${d}</p>\n            <img src='${u}' alt='post-img' style='max-width:100%; border-radius:8px;'>\n            <p class='content'>${c.replace(/\n/g, '<br>')}</p>\n        </article>\n`;
+            const out = document.getElementById('o');
+            out.textContent = html;
+            out.style.display = 'block';
+        }
+    </script>
+</body>
 </html>

@@ -15,30 +15,32 @@
 </head>
 <body>
     <div class='container'>
-        <h2>📝 ブログHTML生成</h2>
+        <h2>📝 ブログ記事用HTML生成</h2>
         <span class='label'>記事タイトル</span>
         <input type='text' id='t' placeholder='例: 本日の製作記録'>
-        <span class='label'>画像URL (空欄でもOK)</span>
-        <input type='text' id='u' placeholder='例: https://.../photo.jpg'>
+        <span class='label'>画像ファイル名 (posts/フォルダ内。空欄でもOK)</span>
+        <input type='text' id='i' placeholder='例: screenshot.png'>
         <span class='label'>本文</span>
-        <textarea id='c' rows='5' placeholder='内容を入力してください...'></textarea>
-        <button onclick='gen()'>貼り付け用コードを生成</button>
+        <textarea id='c' rows='8' placeholder='内容を入力してください...'></textarea>
+        <button onclick='gen()'>ブログ用HTMLを生成</button>
         <pre id='o'></pre>
     </div>
     <script>
         function gen(){
-            const t = document.getElementById('t').value;
-            const u = document.getElementById('u').value;
-            const c = document.getElementById('c').value;
-            const d = new Date().toLocaleDateString('ja-JP');
-            
-            // 画像URLがある場合のみimgタグを作成
-            const imgTag = u ? `\n            <img src='${u}' alt='post-img'>` : '';
-            
-            const html = `\n        <article class='post'>\n            <h3>${t}</h3>${imgTag}\n            <p class='content'>${c.replace(/\\n/g, '<br>')}</p>\n            <p class='date'>${d}</p>\n        </article>\n`;
-            const out = document.getElementById('o');
-            out.textContent = html;
-            out.style.display = 'block';
+            const title = document.getElementById('t').value;
+            const img_filename = document.getElementById('i').value; // 'i' for image_filename
+            const content = document.getElementById('c').value;
+            const date = new Date().toISOString().split('T')[0];
+
+            let img_html = '';
+            if (img_filename) {
+                img_html = `<img src="posts/${img_filename}" style="max-width:100%; height:auto; border-radius:8px; margin-bottom:15px;">`;
+            }
+
+            const html_snippet = `\n        <article style='margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 20px;'>\n            <h2>${title}</h2>\n            <p style='color: #888; font-size: 0.9rem;'>公開日: ${date}</p>\n            ${img_html}\n            <div class='post-body'>${content.replace(/\n/g, '<br>')}</div>\n        </article>\n`;
+            const output_element = document.getElementById('o');
+            output_element.textContent = html_snippet;
+            output_element.style.display = 'block';
         }
     </script>
 </body>

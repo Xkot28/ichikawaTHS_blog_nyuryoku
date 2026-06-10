@@ -5,18 +5,23 @@
     <title>EA3 投稿生成ツール</title>
     <style>
         body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
-        button { width: 100%; padding: 15px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        pre { background: #e9ecef; padding: 15px; white-space: pre-wrap; word-wrap: break-word; border-radius: 5px; display: none; margin-top: 20px; border: 1px dashed #007bff; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; }
+        button:hover { background: #0056b3; }
+        pre { background: #e9ecef; padding: 15px; white-space: pre-wrap; word-wrap: break-word; border-radius: 6px; display: none; margin-top: 20px; border-left: 5px solid #007bff; font-size: 0.9rem; }
+        .label { font-weight: bold; color: #333; margin-top: 10px; display: block; }
     </style>
 </head>
 <body>
     <div class='container'>
         <h2>📝 ブログHTML生成</h2>
-        <input type='text' id='t' placeholder='タイトル'>
-        <input type='text' id='u' placeholder='画像のURL'>
-        <textarea id='c' rows='5' placeholder='本文を入力...'></textarea>
+        <span class='label'>記事タイトル</span>
+        <input type='text' id='t' placeholder='例: 本日の製作記録'>
+        <span class='label'>画像URL (空欄でもOK)</span>
+        <input type='text' id='u' placeholder='例: https://.../photo.jpg'>
+        <span class='label'>本文</span>
+        <textarea id='c' rows='5' placeholder='内容を入力してください...'></textarea>
         <button onclick='gen()'>貼り付け用コードを生成</button>
         <pre id='o'></pre>
     </div>
@@ -25,8 +30,12 @@
             const t = document.getElementById('t').value;
             const u = document.getElementById('u').value;
             const c = document.getElementById('c').value;
-            const d = new Date().toLocaleDateString();
-            const html = `\n        <article class='post'>\n            <h3>${t}</h3>\n            <p class='date'>投稿日: ${d}</p>\n            <img src='${u}' alt='post-img' style='max-width:100%; border-radius:8px;'>\n            <p class='content'>${c.replace(/\n/g, '<br>')}</p>\n        </article>\n`;
+            const d = new Date().toLocaleDateString('ja-JP');
+            
+            // 画像URLがある場合のみimgタグを作成
+            const imgTag = u ? `\n            <img src='${u}' alt='post-img'>` : '';
+            
+            const html = `\n        <article class='post'>\n            <h3>${t}</h3>${imgTag}\n            <p class='content'>${c.replace(/\\n/g, '<br>')}</p>\n            <p class='date'>${d}</p>\n        </article>\n`;
             const out = document.getElementById('o');
             out.textContent = html;
             out.style.display = 'block';

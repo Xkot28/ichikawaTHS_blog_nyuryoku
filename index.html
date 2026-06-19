@@ -34,7 +34,7 @@
 
             let img_html = '';
             if (img_filename) {
-                img_html = `<img src="posts/${img_filename}" style="max-width:100%; height:auto; border-radius:8px; margin-bottom:15px;">`;
+                img_html = `<img src="posts/${img_filename}" >`;
             }
 
             const html_snippet = `\n        <article style='margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 20px;'>\n            <h2>${title}</h2>\n            <p style='color: #888; font-size: 0.9rem;'>公開日: ${date}</p>\n            ${img_html}\n            <div class='post-body'>${content.replace(/\n/g, '<br>')}</div>\n        </article>\n`;
